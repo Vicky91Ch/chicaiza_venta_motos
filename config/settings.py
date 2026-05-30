@@ -77,9 +77,9 @@ WSGI_APPLICATION = 'config.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'venta_motos',
-        'USER': 'postgres',
-        'PASSWORD': 'sa.1',
+        'NAME': 'chicaiza_motos_db',
+        'USER': 'chicaiza_motos_user',
+        'PASSWORD': 'postgres',
         'HOST': 'localhost',
         'PORT': '5432',
     }
