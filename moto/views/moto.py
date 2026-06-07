@@ -1,8 +1,9 @@
-from rest_framework import viewsets
+from rest_framework import viewsets, status
 from rest_framework.decorators import action
 from rest_framework.response import Response
 from rest_framework.filters import SearchFilter, OrderingFilter
 from django_filters.rest_framework import DjangoFilterBackend
+from django.db.models import ProtectedError
 
 from moto.models import Moto
 from moto.serializers.moto import MotoSerializer
@@ -39,6 +40,17 @@ class MotoViewSet(viewsets.ModelViewSet):
     ]
 
     ordering = ['id']
+
+    def destroy(self, request, *args, **kwargs):
+        try:
+            instance = self.get_object()
+            instance.delete()
+            return Response(status=status.HTTP_204_NO_CONTENT)
+        except ProtectedError:
+            return Response(
+                {"error": "No se puede eliminar esta moto porque tiene ventas asociadas."},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
 
     @action(detail=False, methods=['get'])
     def stats(self, request):
